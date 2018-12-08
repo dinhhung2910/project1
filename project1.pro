@@ -28,12 +28,17 @@ SOURCES += \
         main.cpp \
         mainwindow.cpp \
     Line.cpp \
-    watersurface.cpp
+    watersurface.cpp \
+    inkdrop.cpp \
+    random.cpp
 
 HEADERS += \
         mainwindow.h \
     line.h \
-    watersurface.h
+    watersurface.h \
+    inkdrop.h \
+    singledrop.h \
+    random.h
 
 FORMS += \
         mainwindow.ui

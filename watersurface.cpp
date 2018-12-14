@@ -17,6 +17,10 @@ void WaterSurface::setStartPos(int x, int y) {
     this->startPosY = translateY(y);
 }
 
+void WaterSurface::setDelay(int delay) {
+    this->delay = delay;
+}
+
 void WaterSurface::setCheckRadius(int radius) {
     this->checkRadius = radius;
 }
@@ -27,20 +31,43 @@ int WaterSurface::getWidth() {
 int WaterSurface::getHeight() {
     return this->height;
 }
+int WaterSurface::getDelay() {
+    return this->delay;
+}
 
-// Các phương thức khởi tạo
-// Khởi tạo cửa sổ với 2 tham số chiều rộng và chiều cao
+
+/**
+ * @brief Các phương thức khởi tạo WaterSurface
+ * @param width: chiều rộng
+ * @param height: chiều cao
+ */
 WaterSurface::WaterSurface(int width, int height)
 {
     setWidth(width);
     setHeight(height);
     this->setFixedSize(getWidth(), getHeight());
 
-    inkDrop = new InkDrop(100 ,10, 0, 0);
     startTimer(5);
 }
+
+/**
+ * @brief Phương thức khỏi tạo mặc định
+ */
 WaterSurface::WaterSurface(QWidget *parent)
     : QWidget(parent) {
+}
+
+/**
+ * @brief Các phương thức khởi tạo WaterSurface
+ * @param inkDrop: giọt mực trên màn hình
+ */
+WaterSurface::WaterSurface(InkDrop* inkDrop) {
+    this->inkDrop = inkDrop;
+    setWidth(2*inkDrop->getMaxX());
+    setHeight(2*inkDrop->getMaxY());
+    this->setFixedSize(getWidth(), getHeight());
+    setStartPos(inkDrop->getStartX(), inkDrop->getStartY());
+    setCheckRadius(inkDrop->getRadius());
 }
 
 // Chuyển từ tọa độ Đề Các sang tọa độ cửa sổ
@@ -96,4 +123,21 @@ void WaterSurface::timerEvent(QTimerEvent *e) {
     Q_UNUSED(e);
     inkDrop->update();
     repaint();
+}
+
+void WaterSurface::startDrawing(int delay) {
+
+    // Dừng bộ đếm thời gian cũ, nếu có
+    stopDrawing();
+
+    // Bắt đầu bộ đếm thời gian mới với delay mới
+    this->timerID = startTimer(delay);
+}
+
+void WaterSurface::stopDrawing() {
+    // Dừng bộ đếm thời gian cũ, nếu có
+    try {
+        killTimer(this->timerID);
+    } catch (int e) {
+    }
 }

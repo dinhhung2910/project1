@@ -40,6 +40,11 @@ void MainWindow::setSurface(WaterSurface* surface) {
     isStarted = false;
 }
 
+void MainWindow::setDetailView(ShowDetail* detailView) {
+    this->detailView = detailView;
+}
+
+
 WaterSurface* MainWindow::getSurface() {
     return this->surface;
 }
@@ -88,16 +93,18 @@ void MainWindow::startDrawing() {
         Qmessage.exec();
     }
     else {
-        inkDrop = new InkDrop(amount, 1, startX, startY, maxX, maxY, radius, maxSpeed, 10, mode);
+        frameSpeed = (amount/1000 + 1);
+
+        inkDrop = new InkDrop(amount, 1, startX, startY, maxX, maxY, radius, maxSpeed, frameSpeed, mode);
         surface = new WaterSurface(inkDrop);
 
         isStarted = true;
         timer = 0;
         ui->checkResultSet->clear();
 
-        surface->startDrawing(10);
+        surface->startDrawing(frameSpeed);
         surface->show();
-
+        detailView->show();
         clock->start(timeCheck);
     }
 }
@@ -116,10 +123,13 @@ void MainWindow::showCount() {
     output += "\n";
     ui->checkResultSet->insertPlainText(output);
     ui->checkResultSet->moveCursor(QTextCursor::End);
+
+    //detailView->updateContent();
+    detailView->update();
 }
 
 void MainWindow::resumeDrawing() {
-    surface->startDrawing(10);
+    surface->startDrawing(frameSpeed);
     surface->show();
     clock->start(timeCheck);
 }
@@ -156,5 +166,23 @@ void MainWindow::on_stopDrawing_clicked()
 
         delete inkDrop;
         delete surface;
+    }
+}
+
+void MainWindow::on_slowDown_clicked()
+{
+    if (isStarted) {
+        clock->stop();
+        surface->startDrawing(frameSpeed*2);
+        clock->start(timeCheck*2);
+    }
+}
+
+void MainWindow::on_speedUp_clicked()
+{
+    if (isStarted) {
+        clock->stop();
+         surface->startDrawing(frameSpeed/2);
+        clock->start(timeCheck/2);
     }
 }

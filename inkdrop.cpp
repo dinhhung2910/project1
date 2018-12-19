@@ -186,6 +186,20 @@ void InkDrop::fixPosition(SingleDrop* single) {
         single->stepX = cos(single->direction)*single->speed;
         single->stepY = sin(single->direction)*single->speed;
 
+        /*
+        if ((single->x) > maxX) {
+            single->x = 2*maxX - single->x;
+        }
+        if ((single->x) < -maxX) {
+            single->x = -2*maxX - single->x;
+        }
+        if ((single->y) < -maxY) {
+            single->y = 2*maxY - single->y;
+        }
+        if ((single->y) < -maxY) {
+            single->y = -2*maxY- single->y;
+        }
+        */
     }
 
 }

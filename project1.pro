@@ -30,7 +30,8 @@ SOURCES += \
     Line.cpp \
     watersurface.cpp \
     inkdrop.cpp \
-    random.cpp
+    random.cpp \
+    showdetail.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -38,7 +39,8 @@ HEADERS += \
     watersurface.h \
     inkdrop.h \
     singledrop.h \
-    random.h
+    random.h \
+    showdetail.h
 
 FORMS += \
         mainwindow.ui

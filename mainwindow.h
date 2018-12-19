@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include "watersurface.h"
+#include "showdetail.h"
 
 
 namespace Ui {
@@ -19,6 +20,7 @@ public:
     ~MainWindow();
 
     void setSurface(WaterSurface* surface);
+    void setDetailView(ShowDetail* detailView);
     WaterSurface* getSurface();
 
 private slots:
@@ -37,11 +39,15 @@ private slots:
 */
     void on_stopDrawing_clicked();
 
+    void on_slowDown_clicked();
+
+    void on_speedUp_clicked();
+
 private:
     Ui::MainWindow *ui;
     InkDrop* inkDrop;
     WaterSurface* surface;
-
+    ShowDetail *detailView;
 
     bool isStarted; // Việc vẽ đã được bắt đầu hay chưa
     int frameSpeed; // Tốc độ khung hình

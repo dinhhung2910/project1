@@ -1,5 +1,11 @@
 <RCC>
     <qresource prefix="/icons">
         <file>resources/icons/play-button.png</file>
+        <file>resources/icons/black-square.png</file>
+        <file>resources/icons/fast-forward-button.png</file>
+        <file>resources/icons/fast-rewind-button.png</file>
+        <file>resources/icons/pause-button.png</file>
+        <file>resources/icons/play-button-sing.png</file>
+        <file>resources/icons/info-sign.png</file>
     </qresource>
 </RCC>

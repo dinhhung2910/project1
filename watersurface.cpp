@@ -24,6 +24,9 @@ void WaterSurface::setDelay(int delay) {
 void WaterSurface::setCheckRadius(int radius) {
     this->checkRadius = radius;
 }
+void WaterSurface::setInkDrop(InkDrop* inkDrop) {
+    this->inkDrop = inkDrop;
+}
 
 int WaterSurface::getWidth() {
     return this->width;
@@ -34,7 +37,9 @@ int WaterSurface::getHeight() {
 int WaterSurface::getDelay() {
     return this->delay;
 }
-
+InkDrop* WaterSurface::getInkDrop() {
+    return this->inkDrop;
+}
 
 /**
  * @brief Các phương thức khởi tạo WaterSurface
@@ -94,13 +99,13 @@ void WaterSurface::paintEvent(QPaintEvent *e) {
 
 // Tô màu nền cho mặt nước
 void WaterSurface::fillBackground(QPainter *qp) {
-    qp->fillRect(0, 0, width, height, QColor("#323133"));
+    qp->fillRect(0, 0, width, height, QColor("#374353"));
 }
 
 // Vẽ vòng tròn xung quanh điểm bắt đầu
 void WaterSurface::drawCheckCircle(QPainter *qp) {
-    qp->setPen(QPen("#3c3b3d"));
-    qp->setBrush(QBrush("#3c3b3d"));
+    qp->setPen(QPen("#25bea0"));
+    qp->setBrush(QBrush("#25bea0"));
     qp->drawEllipse(startPosX-checkRadius, startPosY-checkRadius, 2*checkRadius, 2*checkRadius);
 }
 

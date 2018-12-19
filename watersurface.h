@@ -47,10 +47,12 @@ public:
     void setStartPos (int x, int y);
     void setCheckRadius (int radius);
     void setDelay (int delay);
+    void setInkDrop(InkDrop* inkdrop);
 
     int getWidth ();
     int getHeight();
     int getDelay();
+    InkDrop* getInkDrop();
 
     // Đổi từ tọa độ Đề Các sang tọa độ cửa sổ
     int translateX(int x);

@@ -15,7 +15,7 @@ Random::Random()
 int Random::getRandomBetween(int begin, int end) {
 
     // Trường hợp số nhỏ lớn hơn số lớn thì tạm trả về số nhỏ
-    if (begin > end) return begin;
+    if (begin >= end) return begin;
 
     // Dùng thời gian  hiện tại của máy tính để làm seed cho hàm random
     // nanoseconds

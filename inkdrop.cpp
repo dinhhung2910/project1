@@ -2,6 +2,7 @@
 #include "random.h"
 #include "math.h"
 #include "singledrop.h"
+#include <QTextStream>
 
 // get and set methods
 void InkDrop::setAmount(int amount) {
@@ -49,19 +50,39 @@ void InkDrop::setRadius(int radius) {
 int InkDrop::getRadius() {
     return this->radius;
 }
+void InkDrop::setMaxSpeed(float maxSpeed) {
+    this->maxSpeed = maxSpeed;
+}
+float InkDrop::getMaxSpeed() {
+    return this->maxSpeed;
+}
+void InkDrop::setDelay(int delay) {
+    this->delay = delay;
+}
+int InkDrop::getDelay() {
+    return this->delay;
+}
+
 
 InkDrop::InkDrop()
 {}
 
-InkDrop::InkDrop(int amount, int freq, int startX, int startY, int maxX, int maxY, int radius, int mode) {
+InkDrop::InkDrop(int amount, int freq, int startX, int startY, int maxX, int maxY, int radius, float maxSpeed, int delay, int mode) {
     setAmount(amount);
     setFreq(freq);
     setStart(startX, startY);
     setRadius(radius);
-    single = new SingleDrop[amount];
-    initSingle();
+
+
     setMode(mode);
     setMax(maxX, maxY);
+
+
+    setMaxSpeed(maxSpeed);
+    setDelay(delay);
+
+    single = new SingleDrop[amount];
+    initSingle();
 }
 
 void InkDrop::initSingle() {
@@ -69,11 +90,44 @@ void InkDrop::initSingle() {
         single[i].x = startX;
         single[i].y = startY;
         single[i].direction = Random().getRandomRadian();
-        single[i].speed = Random().getRandomBetween(1, 1000)/100.0;
+        /*
+        QTextStream out(stdout);
+        out << (int) this->maxSpeed;
+        */
+        single[i].speed = Random().getRandomBetween(1, (int) this->maxSpeed)*(this->delay)/1000.0;
         single[i].stepX = cos(single[i].direction)*single[i].speed;
         single[i].stepY = sin(single[i].direction)*single[i].speed;
         single[i].alarm = Random().getRandomBetween(30, 1000);
     }
+}
+
+int InkDrop::validate(int amount, int radius, int startX, int startY, int maxX, int maxY, float maxSpeed) {
+
+    // Trường hợp số hạt <= 0
+    if (amount <= 0)
+        return 1;
+
+    // Bán kính kiểm tra <= 0
+    if (radius <= 0)
+        return 2;
+
+    // Kích thước <= 0
+    if (maxX <= 0)
+        return 3;
+    if (maxY <= 0)
+        return 4;
+
+    // Tọa độ xuất phát vượt quá maxX, maxY
+    if (fabs(startX) >= maxX)
+        return 5;
+    if (fabs(startY) >= maxY)
+        return 6;
+
+    // Tốc độ xuất phát <= 0
+    if (maxSpeed <= 0)
+        return 7;
+
+    return 0;
 }
 
 void InkDrop::update() {
@@ -131,5 +185,26 @@ void InkDrop::fixPosition(SingleDrop* single) {
         }
         single->stepX = cos(single->direction)*single->speed;
         single->stepY = sin(single->direction)*single->speed;
+
     }
+
+}
+
+int InkDrop::getCount() {
+    int count = 0;
+    float distance = 0;
+    float sX, sY;
+
+    for (int i=0; i<this->amount; i++) {
+        sX = single[i].x - startX;
+        sY = single[i].y - startY;
+        distance = sqrt(sX*sX + sY*sY);
+        //QTextStream out(stdout);
+        //out << distance;
+        if (distance < radius && single[i].speed>0) {
+            count++;
+        }
+    }
+
+    return count;
 }
